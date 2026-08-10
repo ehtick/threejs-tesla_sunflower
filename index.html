@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla by Sunflower</title>
+    <link rel="icon" href="data:,">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+        #container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+        canvas {
+            display: block;
+        }
+        #overlay {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at center, rgba(24, 31, 34, 0.72), transparent 42%),
+                #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            cursor: pointer;
+            isolation: isolate;
+            overflow: hidden;
+            z-index: 100;
+            transition: opacity 600ms ease, visibility 0s;
+        }
+        #overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 600ms ease, visibility 0s 600ms;
+        }
+        #overlay.loading {
+            cursor: wait;
+        }
+        .launch-orb {
+            position: absolute;
+            width: min(76vw, 620px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: url('assets/textures/sphere.jpg') center / cover;
+            filter: saturate(0.55) contrast(1.15);
+            mix-blend-mode: screen;
+            opacity: 0.42;
+            -webkit-mask-image: radial-gradient(circle, #000 42%, transparent 72%);
+            mask-image: radial-gradient(circle, #000 42%, transparent 72%);
+            animation: breathe 9s ease-in-out infinite alternate;
+        }
+        .launch-orb::before,
+        .launch-orb::after {
+            content: '';
+            position: absolute;
+            border: 1px solid rgba(205, 226, 228, 0.18);
+            border-radius: 50%;
+        }
+        .launch-orb::before {
+            inset: 10%;
+            border-left-color: transparent;
+            border-right-color: rgba(205, 226, 228, 0.04);
+            animation: orbit 18s linear infinite;
+        }
+        .launch-orb::after {
+            inset: 27% -7%;
+            transform: rotate(-18deg);
+            opacity: 0.55;
+        }
+        .launch-copy {
+            position: relative;
+            text-align: center;
+            z-index: 1;
+        }
+        .launch-kicker {
+            margin-bottom: 18px;
+            color: rgba(220, 232, 233, 0.6);
+            font: 10px/1.4 monospace;
+            letter-spacing: 0.42em;
+            text-transform: uppercase;
+        }
+        .launch-title {
+            margin-right: -0.18em;
+            color: #e9eeee;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: clamp(64px, 12vw, 138px);
+            font-weight: 200;
+            letter-spacing: 0.18em;
+            line-height: 0.9;
+            text-shadow: 0 0 32px rgba(205, 226, 228, 0.22);
+        }
+        .launch-start {
+            display: inline-block;
+            margin-top: 46px;
+            padding: 11px 17px;
+            border: 1px solid rgba(220, 232, 233, 0.25);
+            background: rgba(0, 0, 0, 0.34);
+            color: rgba(235, 242, 243, 0.78);
+            font: 11px/1 monospace;
+            letter-spacing: 0.16em;
+            transition: border-color 180ms ease, color 180ms ease;
+        }
+        #overlay:not(.loading):hover .launch-start {
+            border-color: rgba(235, 242, 243, 0.65);
+            color: #fff;
+        }
+        .launch-source {
+            position: absolute;
+            left: 50%;
+            bottom: 24px;
+            width: max-content;
+            color: rgba(220, 232, 233, 0.45);
+            font: 10px/1 monospace;
+            letter-spacing: 0.12em;
+            text-decoration: none;
+            transform: translateX(-50%);
+            transition: color 180ms ease;
+            z-index: 1;
+        }
+        .launch-source:hover {
+            color: rgba(235, 242, 243, 0.9);
+        }
+        @keyframes breathe {
+            from { transform: scale(0.98) rotate(-2deg); }
+            to { transform: scale(1.03) rotate(2deg); }
+        }
+        @keyframes orbit {
+            to { transform: rotate(360deg); }
+        }
+        #info {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            color: #666;
+            font-size: 12px;
+            z-index: 50;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #overlay,
+            #overlay.hidden {
+                transition: none;
+            }
+            .launch-orb,
+            .launch-orb::before {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay" class="loading">
+        <div class="launch-orb" aria-hidden="true"></div>
+        <div class="launch-copy">
+            <p class="launch-kicker">Sunflower · 2000</p>
+            <h1 class="launch-title">TESLA</h1>
+            <p class="launch-start">loading</p>
+        </div>
+        <a class="launch-source" href="https://github.com/mrdoob/tesla_sunflower" target="_blank" rel="noopener noreferrer">github</a>
+    </div>
+    <div id="container"></div>
+    <div id="info"></div>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
