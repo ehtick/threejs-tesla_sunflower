@@ -16,7 +16,34 @@ async function init() {
         startLabel.textContent = 'click to begin';
         overlay.classList.remove('loading');
 
+        const audio = demo.audio.element;
+        let wakeLock = null;
+        const shouldStayAwake = () =>
+            demo.isActive && !audio.paused && document.visibilityState === 'visible';
+
+        const requestWakeLock = async () => {
+            if (!navigator.wakeLock || wakeLock || !shouldStayAwake()) return;
+
+            try {
+                const lock = await navigator.wakeLock.request('screen');
+                if (wakeLock || !shouldStayAwake()) {
+                    await lock.release();
+                    return;
+                }
+
+                wakeLock = lock;
+                lock.addEventListener('release', () => {
+                    if (wakeLock === lock) wakeLock = null;
+                }, { once: true });
+            } catch {}
+        };
+        const releaseWakeLock = () => {
+            const lock = wakeLock;
+            wakeLock = null;
+            lock?.release().catch(() => {});
+        };
         const showStart = () => {
+            releaseWakeLock();
             overlay.classList.remove('hidden');
         };
         const startDemo = () => {
@@ -28,6 +55,12 @@ async function init() {
         };
 
         demo.onEnded = showStart;
+        audio.addEventListener('play', requestWakeLock);
+        audio.addEventListener('pause', releaseWakeLock);
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') requestWakeLock();
+            else releaseWakeLock();
+        });
         overlay.addEventListener('click', event => {
             if (!event.target.closest('a')) startDemo();
         });
