@@ -1,6 +1,6 @@
 # Tesla by Sunflower (Three.js port)
 
-[View the demo](https://mrdoob.github.io/tesla_sunflower/)
+[View the demo](https://demoports.github.io/tesla_sunflower/)
 
 A Three.js port of Sunflower's 2000 Windows demo. The effect order,
 timing, fixed-function blend modes, source geometry, textures, and soundtrack
