@@ -1,4 +1,4 @@
-# Tesla by Sunflower (Three.js port)
+# Tesla (three.js port)
 
 [View the demo](https://demoports.github.io/tesla_sunflower/)
 
