@@ -118,21 +118,38 @@
             border-color: rgba(235, 242, 243, 0.65);
             color: #fff;
         }
-        .launch-source {
+        .launch-controls {
             position: absolute;
             left: 50%;
             bottom: 24px;
-            width: max-content;
+            width: calc(100% - 8px);
             color: rgba(220, 232, 233, 0.45);
-            font: 10px/1 monospace;
+            font: 10px/1.4 monospace;
             letter-spacing: 0.12em;
-            text-decoration: none;
+            text-align: center;
             transform: translateX(-50%);
-            transition: color 180ms ease;
             z-index: 1;
         }
-        .launch-source:hover {
+        .launch-controls kbd {
+            color: rgba(220, 232, 233, 0.72);
+            font: inherit;
+        }
+        .launch-controls a {
+            display: inline-block;
+            margin-top: 8px;
+            color: rgba(220, 232, 233, 0.55);
+            text-decoration: none;
+            transition: color 180ms ease;
+        }
+        .launch-controls a:hover,
+        .launch-controls a:focus-visible {
             color: rgba(235, 242, 243, 0.9);
+        }
+        @media (max-width: 520px) {
+            .launch-controls {
+                font-size: 8px;
+                letter-spacing: 0.08em;
+            }
         }
         @keyframes breathe {
             from { transform: scale(0.98) rotate(-2deg); }
@@ -170,7 +187,11 @@
             <h1 class="launch-title">TESLA</h1>
             <p class="launch-start">loading</p>
         </div>
-        <a class="launch-source" href="https://github.com/demoports/tesla_sunflower" target="_blank" rel="noopener noreferrer">github</a>
+        <div class="launch-controls">
+            <kbd>space</kbd> pause &nbsp;·&nbsp; <kbd>← →</kbd> seek &nbsp;·&nbsp;
+            <kbd>f</kbd> fullscreen &nbsp;·&nbsp; <kbd>esc</kbd> stop<br>
+            <a href="https://github.com/demoports/tesla_sunflower" target="_blank" rel="noopener noreferrer">github</a>
+        </div>
     </div>
     <div id="container"></div>
     <div id="info"></div>

@@ -85,6 +85,14 @@ async function init() {
             if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
                 event.preventDefault();
                 demo.seekBy(event.key === 'ArrowLeft' ? -SEEK_STEP : SEEK_STEP);
+                return;
+            }
+
+            if (event.code === 'KeyF' && document.fullscreenEnabled) {
+                const action = document.fullscreenElement
+                    ? document.exitFullscreen()
+                    : document.documentElement.requestFullscreen();
+                Promise.resolve(action).catch(() => {});
             }
         }, true);
 
