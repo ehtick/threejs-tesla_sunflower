@@ -5,7 +5,7 @@ const SEEK_STEP = 5;
 async function init() {
     const container = document.getElementById('container');
     const overlay = document.getElementById('overlay');
-    const startLabel = overlay.querySelector('.launch-start');
+    const startButton = overlay.querySelector('.launch-start');
     const debug = new URLSearchParams(location.search).has('debug');
 
     if (debug) document.getElementById('info').style.display = 'block';
@@ -13,7 +13,8 @@ async function init() {
     try {
         const demo = new Demo(container);
         await demo.init();
-        startLabel.textContent = 'click to begin';
+        startButton.textContent = 'start';
+        startButton.disabled = false;
         overlay.classList.remove('loading');
 
         const audio = demo.audio.element;
